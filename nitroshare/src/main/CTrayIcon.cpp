@@ -26,6 +26,8 @@
 #include "main/CTrayIcon.h"
 #include "util/defaults.h"
 #include "util/settings.h"
+extern void qt_mac_set_dock_menu(QMenu *);
+
 
 CTrayIcon::CTrayIcon()
     : m_send_files_menu(tr("Send Files To")), m_send_directory_menu(tr("Send Directory To"))
@@ -120,8 +122,7 @@ void CTrayIcon::OnRemoveShareBox()
 {
     CShareBox * box = qobject_cast<CShareBox *>(sender());
     m_shareboxes.removeOne(box);
-    delete box;
-
+    box->deleteLater();
     UpdateShareBoxes();
 }
 
@@ -305,4 +306,20 @@ void CTrayIcon::CreateShareBoxes()
            of the machine it is for. */
         CreateShareBox(map["id"].toString(), map["name"].toByteArray())->move(map["pos"].toPoint());
     }
+
+    /* Make the menu items for the Mac Dock. Items are duplicates of the
+       context menu, Except for Send Files and Send Directory, also Exit is removed
+       to avoid duplicate functionality. */
+
+    QMenu * menu = new QMenu;
+
+    menu->addAction(tr("Send Files"), this, SLOT(OnSendFiles()));
+    menu->addAction(tr("Send Directory"), this, SLOT(OnSendDirectory()));
+    menu->addSeparator();
+    menu->addAction(tr("Add ShareBox"), this, SLOT(OnAddShareBox()));
+    menu->addSeparator();
+    menu->addAction(tr("Settings"), this, SLOT(OnSettings()));
+    menu->addAction(tr("About"),    this, SLOT(OnAbout()));
+
+    qt_mac_set_dock_menu(menu);
 }

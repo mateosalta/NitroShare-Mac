@@ -47,14 +47,19 @@ CShareBox::CShareBox()
        to the desktop as a widget. This isn't as easy as it sounds, however and
        the values below were arrived upon by much trial and error. They seem
        to work on all platforms / window managers tested so far. */
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnBottomHint);
+    setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_MacNoShadow);
     setAttribute(Qt::WA_X11NetWmWindowTypeDock);
 
     setAcceptDrops(true);
     setWindowTitle("NitroShare Share Box"); /* Ideally this is never seen anywhere. */
 
     Init();
+
+    QFile::copy(":/images/multiple.png", "/Applications/nitroshare.app/Contents/Resources/multiple.png");
+    QFile::copy(":/images/single.png", "/Applications/nitroshare.app/Contents/Resources/single.png");
+    QFile::copy(":/images/sharebox.png", "/Applications/nitroshare.app/Contents/Resources/sharebox.png");
 }
 
 void CShareBox::OnProgress(int progress)
@@ -83,7 +88,7 @@ void CShareBox::Init()
 
     /* Create the context menu and show the box. */
     CreateContextMenu();
-    show();
+    showNormal();
 }
 
 void CShareBox::CreateContextMenu()
@@ -191,7 +196,7 @@ void CShareBox::paintEvent(QPaintEvent *)
     painter.scale(m_draw_scale, m_draw_scale);
 
     /* First draw the background. */
-    painter.drawPixmap(0, 0, 256, 256, QPixmap(":/images/sharebox.png"));
+    painter.drawPixmap(0, 0, 256, 256, QPixmap("/Applications/nitroshare.app/Contents/Resources/sharebox.png"));
 
     /* Then draw the blue border if applicable. */
     if(m_highlight)
@@ -251,5 +256,5 @@ void CShareBox::paintEvent(QPaintEvent *)
     }
 
     /* Lastly draw the icon. */
-    painter.drawPixmap(80, 16, 96, 96, QPixmap(m_id.isEmpty()?":/images/multiple.png":":/images/single.png"));
+    painter.drawPixmap(80, 16, 96, 96, QPixmap(m_id.isEmpty()?"/Applications/nitroshare.app/Contents/Resources/multiple.png":"/Applications/nitroshare.app/Contents/Resources/single.png"));
 }

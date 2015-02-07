@@ -6,14 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>450</height>
+    <width>470</width>
+    <height>483</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>NitroShare Settings</string>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <item>
     <widget class="QTabWidget" name="Tabs">
      <property name="currentIndex">
@@ -57,8 +69,14 @@
        </item>
        <item>
         <widget class="QCheckBox" name="LoadAtStartup">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="text">
           <string>Load at startup</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -73,6 +91,13 @@
         <widget class="QCheckBox" name="CalculateChecksum">
          <property name="text">
           <string>Calculate checksum of files</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="SystemTray">
+         <property name="text">
+          <string>System tray only (requires restart)</string>
          </property>
         </widget>
        </item>
